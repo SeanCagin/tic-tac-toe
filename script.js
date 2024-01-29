@@ -37,7 +37,6 @@ function makeBoard() {
             }
             board.push(row);
         }
-        console.table(board);
     }
     resetBoard();
 
@@ -63,7 +62,6 @@ function makeBoard() {
                 return {code: RETVALS.ERROR, message: `Play a legal move`, gameEnd, hasWinner};
             }
         } else {
-            console.log("The game has ended! Please start over");
             return {code: RETVALS.ERROR, message: `Game over`, gameEnd}
         }
     }
