@@ -23,8 +23,13 @@ function makeBoard() {
     let player = MARKER.X;
     let gameEnd = false;
     let hasWinner = false;
+
     function resetBoard() {
+        gameEnd = false;
+        hasWinner = false;
         board = [];
+        moveCount = 0;
+        player = MARKER.X;
         for (let i = 0; i < LINE_CELL_COUNT; i++) {
             let row = [];
             for (let j = 0; j < LINE_CELL_COUNT; j++) {
@@ -53,7 +58,7 @@ function makeBoard() {
                     }
                     player = player === MARKER.X ? MARKER.O : MARKER.X;
                 }
-                return {code: RETVALS.SUCCESS, message: `Player "${player}" to move`, gameEnd, hasWinner};
+                return {code: RETVALS.SUCCESS, message: player, gameEnd, hasWinner};
             } else {
                 return {code: RETVALS.ERROR, message: `Play a legal move`, gameEnd, hasWinner};
             }
@@ -109,24 +114,47 @@ const visualBoard = (function() {
     const resetButton = document.querySelector("#reset");
     const nameButton = document.querySelector("#open-name-form");
     const nameFormDialog = document.querySelector("dialog");
+    const closeDialog = document.querySelector("#close");
+    const submitDialog = document.querySelector("#submit");
+    const nameForm = document.querySelector("form");
+    let player1 = "";
+    let player2 = "";
 
     nameButton.addEventListener("click", () => {
         nameFormDialog.showModal();
     });
 
-    function getPlayer(n) {
-        if (n == 1) return player1;
-        return player2;
+    closeDialog.addEventListener("click", () => {
+        nameForm.reset();
+        nameFormDialog.close();
+    });
+
+    submitDialog.addEventListener("click", (e) => {
+        e.preventDefault();
+        if(nameForm.checkValidity()) {
+            let data = new FormData(nameForm); 
+            player1 = data.get("player1-name");
+            player2 = data.get("player2-name");
+            resetBoard();
+            nameForm.reset();
+            nameFormDialog.close();
+        } else {
+            nameForm.reportValidity();
+        }
+    });
+
+    function getPlayer(char) {
+        if (char === "x") return player1 + " (x)";
+        return player2 + " (o)";
     }
 
     function resetBoard() {
-        status.textContent = `Player ${getPlayer(1)}'s turn`;
+        status.textContent = `${getPlayer("x")}'s turn`;
         winner.textContent = "";
         DOMBoard.innerHTML = "";
         DOMBoard.classList.remove("finished");
         logicBoard.resetBoard();
         renderBoard();
-
     }
 
     resetButton.addEventListener("click", resetBoard);
@@ -141,11 +169,15 @@ const visualBoard = (function() {
         if (gameEnd) {
             DOMBoard.classList.add("finished");
             if (code === RETVALS.SUCCESS) {
-                if (hasWinner) winner.textContent = `Player ${logicBoard.getBoardElement(row, col)}`;
+                if (hasWinner) winner.textContent = `${getPlayer(logicBoard.getBoardElement(row, col))}`;
                 else winner.textContent = "Draw";
             } 
         }
-        status.textContent = `${message}`;
+        if (message == "x" || message == "o") {
+            status.textContent = `${getPlayer(message)}'s turn`;
+        } else {
+            status.textContent = message;
+        }
     }
 
     function renderBoard() {
@@ -162,9 +194,7 @@ const visualBoard = (function() {
             }
         }
     }
+    renderBoard();
     return {DOMBoard, logicBoard, renderBoard};
 })();
 
-let player1 = "x";
-let player2 = "o";
-visualBoard.renderBoard();

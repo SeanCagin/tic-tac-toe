@@ -57,10 +57,10 @@
   width: 4rem;
   text-align: right;
   margin-right: 3rem;
-  margin-left: 2rem;
+  margin-left: 7rem;
 }
 .game-holder {
-  width: calc(var(--cell-size) * var(--board-length) + 5rem);
+  width: calc(var(--cell-size) * var(--board-length) + 15rem);
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 5rem;
@@ -153,6 +153,7 @@ dialog::backdrop {
   opacity: 0.5;
 }
 form button {
+  font-family: "Caveat", cursive, 'Courier New', Courier, monospace;
   width: 10rem;
   background-color: #fdba74;
   padding: 1rem;

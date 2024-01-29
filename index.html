@@ -30,15 +30,15 @@
     <form action="">
       <div class="form-row">
         <label for="player1-name">First Player:</label>
-        <input type="text" minlength="1" id="player1-name" required />
+        <input type="text" minlength="1" maxlength="13" id="player1-name" name="player1-name" required />
       </div>
       <div class="form-row">
         <label for="player2-name">Second Player:</label>
-        <input type="text" minlength="1" id="player2-name" required />
+        <input type="text" minlength="1" maxlength="13" id="player2-name" name="player2-name" required />
       </div>
       <div class="form-button-row">
-        <button type="submit">Submit</button>
-        <button type="close">Close</button>
+        <button type="submit" id="submit">Submit</button>
+        <button type="button" id="close">Close</button>
       </div>
     </form>
   </dialog>
