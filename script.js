@@ -2,8 +2,7 @@ const LINE_CELL_COUNT = 3;
 
 const RETVALS = {
     SUCCESS: 1,
-    ILLEGAL_MOVE: -1,
-    GAME_NOT_IN_PLAY: -2,
+    ERROR: -1,
 };
 
 // factory function for logical (code/backendish) board
@@ -20,9 +19,10 @@ function makeBoard() {
     };
 
     let board = [];
-    let moveCount = 1;
+    let moveCount = 0;
     let player = MARKER.X;
     let gameEnd = false;
+    let hasWinner = false;
     function resetBoard() {
         board = [];
         for (let i = 0; i < LINE_CELL_COUNT; i++) {
@@ -44,18 +44,22 @@ function makeBoard() {
                 let winner = findWinner();
                 if (winner !== MARKER.NONE) {
                     gameEnd = true;
-                    console.log(`Congrats! Player ${winner} has won!`);
+                    hasWinner = true;
+                    return {code: RETVALS.SUCCESS, message: `Game over`, gameEnd, hasWinner};
                 } else {
+                    if (moveCount == LINE_CELL_COUNT*LINE_CELL_COUNT) {
+                        gameEnd = true;
+                        return {code: RETVALS.SUCCESS, message: `Game over`, gameEnd, hasWinner};                        
+                    }
                     player = player === MARKER.X ? MARKER.O : MARKER.X;
                 }
-                console.table(board);
-                return RETVALS.SUCCESS;
+                return {code: RETVALS.SUCCESS, message: `Player "${player}" to move`, gameEnd, hasWinner};
             } else {
-                return RETVALS.ILLEGAL_MOVE;
+                return {code: RETVALS.ERROR, message: `Play a legal move`, gameEnd, hasWinner};
             }
         } else {
             console.log("The game has ended! Please start over");
-            return RETVALS.GAME_NOT_IN_PLAY
+            return {code: RETVALS.ERROR, message: `Game over`, gameEnd}
         }
     }
 
@@ -95,36 +99,44 @@ function makeBoard() {
     return {playMove, getBoardElement};
 }
 
+
 const visualBoard = (function() {
     const logicBoard = makeBoard();
 
     const DOMBoard = document.querySelector(".board");
-    const status = document.querySelector(".status");
+    const status = document.querySelector("#status .message-holder");
+    const winner = document.querySelector("#winner .message-holder");
 
     function playMove(cell, row, col) {
-        const actionResult = logicBoard.playMove(row, col);
-        if (actionResult === RETVALS.SUCCESS) {
+        const {code, message, gameEnd, hasWinner} = logicBoard.playMove(row, col);
+        if (code === RETVALS.SUCCESS) {
             cell.textContent = logicBoard.getBoardElement(row, col);
-        } else if (actionResult === RETVALS.ILLEGAL_MOVE) {
-            status.textContent = `You cannot play there!`;
-        } else {
-            status.textContent = `Game has ended! Please start a new game if you wish to play.`;
+            cell.classList.toggle(logicBoard.getBoardElement(row, col));
+            cell.classList.toggle("moved");
+        } 
+        if (gameEnd) {
+            DOMBoard.classList.add("finished");
+            if (code === RETVALS.SUCCESS) {
+                if (hasWinner) winner.textContent = `Player ${logicBoard.getBoardElement(row, col)}`;
+                else winner.textContent = "Draw";
+            } 
         }
+        status.textContent = `${message}`;
     }
 
     function renderBoard() {
         for (let i = 0; i < LINE_CELL_COUNT; i++) {
-            const row = document.createElement("div");
-            row.classList.toggle("row");
             for (let j = 0; j < LINE_CELL_COUNT; j++) {
                 const cell = document.createElement("div");
                 cell.classList.toggle("cell");
-                cell.addEventListener("click", );
+                cell.addEventListener("click", (e) => {
+                    playMove(cell, i, j);
+                });
+                
                 cell.textContent = logicBoard.getBoardElement(i, j);
-                row.appendChild(cell);
+                DOMBoard.appendChild(cell);
             }
-            DOMBoard.appendChild(row);
-        } 
+        }
     }
     return {DOMBoard, logicBoard, renderBoard};
 })();

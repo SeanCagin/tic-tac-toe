@@ -3,22 +3,64 @@
   padding: 0;
 }
 
+:root {
+  --board-length: 3;
+  --cell-size: 6rem;
+  font-family: "Caveat", cursive;
+  background-color: #fed7aa;
+}
+
 .cell {
-  width: 3rem;
-  height: 3rem;
-  border: 2px solid black;
-  background-color: #d6d3d1;
-  display: inline-block;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: #fdba74;
+  display: block;
+  line-height: 5rem;
+  text-align: center;
+  font-size: 4rem;
+  font-weight: bolder;
+  user-select: none;
 }
-
-.row {
-  line-height: 0px;
+.cell.o {
+  color: #65a30d;
 }
-
+.cell.x {
+  color: #b91c1c;
+}
 .board {
+  display: grid;
+  grid-template-columns: repeat(var(--board-length), var(--cell-size));
   margin-left: auto;
   margin-right: auto;
   margin-top: 12rem;
-  display: block;
   width: fit-content;
+  gap: 2px;
+  background-color: black;
+}
+.board:not(.finished) .cell:not(.moved):hover {
+  background-color: #fed7aa;
+}
+.content-holder {
+  font-size: 2rem;
+  min-height: 1.2rem;
+  font-weight: bold;
+}
+.board.finished .cell {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+  z-index: 2;
+}
+.title-holder {
+  display: inline-block;
+  width: 4rem;
+  text-align: right;
+  margin-right: 3rem;
+  margin-left: 2rem;
+}
+.game-holder {
+  width: calc(var(--cell-size) * var(--board-length) + 5rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+.message-box {
+
 }
