@@ -107,9 +107,16 @@ const visualBoard = (function() {
     const status = document.querySelector("#status .message-holder");
     const winner = document.querySelector("#winner .message-holder");
     const resetButton = document.querySelector("#reset");
+    const nameButton = document.querySelector("#open-name-form");
+    const nameFormDialog = document.querySelector("dialog");
+
+    nameButton.addEventListener("click", () => {
+        nameFormDialog.showModal();
+    });
 
     function getPlayer(n) {
-        return 1;
+        if (n == 1) return player1;
+        return player2;
     }
 
     function resetBoard() {
@@ -158,4 +165,6 @@ const visualBoard = (function() {
     return {DOMBoard, logicBoard, renderBoard};
 })();
 
+let player1 = "x";
+let player2 = "o";
 visualBoard.renderBoard();

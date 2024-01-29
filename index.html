@@ -10,6 +10,7 @@
   <title>Document</title>
 </head>
 <body>
+
   <div class="game-holder">
     <div class="board"></div>
     <div class="message-box">
@@ -23,7 +24,24 @@
   </div>
   <div class="footer"><a href="https://github.com/SeanCagin/tic-tac-toe">
     <img src="assets/github.svg"></a>
-    <a href="https://github.com/SeanCagin/tic-tac-toe">SeanCagin GitHub 2024</a></div>
+    <a href="https://github.com/SeanCagin/tic-tac-toe">SeanCagin GitHub 2024</a>
+  </div>
+  <dialog>
+    <form action="">
+      <div class="form-row">
+        <label for="player1-name">First Player:</label>
+        <input type="text" minlength="1" id="player1-name" required />
+      </div>
+      <div class="form-row">
+        <label for="player2-name">Second Player:</label>
+        <input type="text" minlength="1" id="player2-name" required />
+      </div>
+      <div class="form-button-row">
+        <button type="submit">Submit</button>
+        <button type="close">Close</button>
+      </div>
+    </form>
+  </dialog>
   <script src="script.js"></script>
 </body>
 </html>
