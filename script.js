@@ -96,7 +96,7 @@ function makeBoard() {
 
     function getBoardElement(row, col) { return board[row][col]; }
 
-    return {playMove, getBoardElement};
+    return {playMove, getBoardElement, resetBoard};
 }
 
 
@@ -106,6 +106,23 @@ const visualBoard = (function() {
     const DOMBoard = document.querySelector(".board");
     const status = document.querySelector("#status .message-holder");
     const winner = document.querySelector("#winner .message-holder");
+    const resetButton = document.querySelector("#reset");
+
+    function getPlayer(n) {
+        return 1;
+    }
+
+    function resetBoard() {
+        status.textContent = `Player ${getPlayer(1)}'s turn`;
+        winner.textContent = "";
+        DOMBoard.innerHTML = "";
+        DOMBoard.classList.remove("finished");
+        logicBoard.resetBoard();
+        renderBoard();
+
+    }
+
+    resetButton.addEventListener("click", resetBoard);
 
     function playMove(cell, row, col) {
         const {code, message, gameEnd, hasWinner} = logicBoard.playMove(row, col);

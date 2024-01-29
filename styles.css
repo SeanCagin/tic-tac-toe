@@ -6,7 +6,7 @@
 :root {
   --board-length: 3;
   --cell-size: 6rem;
-  font-family: "Caveat", cursive;
+  font-family: "Caveat", cursive, 'Courier New', Courier, monospace;
   background-color: #fed7aa;
 }
 
@@ -32,18 +32,21 @@
   grid-template-columns: repeat(var(--board-length), var(--cell-size));
   margin-left: auto;
   margin-right: auto;
-  margin-top: 12rem;
+  margin-top: 16rem;
   width: fit-content;
   gap: 2px;
-  background-color: black;
+  background-color: #9a3412;
+  border: 5px solid #9a3412;
 }
 .board:not(.finished) .cell:not(.moved):hover {
   background-color: #fed7aa;
+  cursor: pointer;
 }
 .content-holder {
   font-size: 2rem;
   min-height: 1.2rem;
   font-weight: bold;
+  color: #9a3412;
 }
 .board.finished .cell {
   background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
@@ -60,7 +63,46 @@
   width: calc(var(--cell-size) * var(--board-length) + 5rem);
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 5rem;
 }
-.message-box {
-
+.sidebar {
+  width: 200px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.option {
+  font-size: 2rem;
+  width: 12rem;
+  height: 4rem;
+  background-color: #fdba74;
+  padding: 1rem;
+  margin: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0rem;
+  border: 2px solid #9a3412;
+  font-family: "Caveat", cursive, 'Courier New', Courier, monospace;
+  color: #9a3412;
+}
+.option:hover {
+  cursor: pointer;
+  background-color: #fed7aa;
+}
+.footer {
+  padding: 0.2rem;
+  width: 100%;
+  background-color: #fdba74;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer img {
+  width: 1.5rem;
+}
+.footer a {
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
 }
